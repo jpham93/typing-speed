@@ -4,11 +4,11 @@ import './App.css';
 const App = () => {
   const [input, setInput] = useState('');
   const [timeLeft, setTime] = useState(5);
+  const [isRunning, setRunning] = useState(false);
 
   const handleChange = e => {
     const {value} = e.target;
     setInput(value);
-    console.log(countWords());
   };
 
   const countWords = () => {
@@ -17,24 +17,26 @@ const App = () => {
   };
 
   useEffect(() => {
-    setTimeout(() =>
-      timeLeft > 0 && setTime(prevTime => prevTime - 1), 1000
-    );
-  }, [timeLeft]);
+    if (timeLeft > 0 && isRunning) {
+      setTimeout( () => {
+        setTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setRunning(false);
+    }
+  }, [timeLeft, isRunning]);
 
   return (
     <>
-      <form>
-        <h1>Speed Typer</h1>
-        <textarea
-          name='input'
-          value={input}
-          onChange={handleChange}
-        />
-        <h4>Time Remaining: {timeLeft}</h4>
-        <button>Start</button>
-        <h1>Word count: </h1>
-      </form>
+      <h1>Speed Typer</h1>
+      <textarea
+        name='input'
+        value={input}
+        onChange={handleChange}
+      />
+      <h4>Time Remaining: {timeLeft}</h4>
+      <button onClick={() => setRunning(true)}>Start</button>
+      <h1>Word count: </h1>
     </>
   );
 };
