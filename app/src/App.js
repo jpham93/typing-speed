@@ -7,8 +7,12 @@ const App = () => {
   const handleChange = e => {
     const {value} = e.target;
     setInput(value);
+    console.log(countWords());
+  };
 
-    console.log(input);
+  const countWords = () => {
+    const wordsArr = input.trim().split(' ');
+    return wordsArr.filter(word => word !== "").length;
   };
 
   return (
