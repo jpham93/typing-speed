@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 const App = () => {
-  const TIME = 5;
+  const TIME = 10;
 
   const [input, setInput] = useState('');
   const [timeLeft, setTime] = useState(TIME);
   const [isRunning, setRunning] = useState(false);
   const [wordCount, setWordCount] = useState(0);
+  const textareaRef = useRef(null);
 
   const handleChange = e => {
     const {value} = e.target;
@@ -23,6 +24,8 @@ const App = () => {
     setRunning(true);
     setTime(TIME);
     setInput('');
+    textareaRef.current.disabled = false;
+    textareaRef.current.focus();
   };
 
   const endGame = () => {
@@ -38,10 +41,6 @@ const App = () => {
     } else if (timeLeft === 0) {
       endGame();
     }
-
-    if (timeLeft > 0) {
-      countWords()
-    }
   }, [timeLeft, isRunning]);
 
   return (
@@ -52,6 +51,7 @@ const App = () => {
         value={input}
         onChange={handleChange}
         disabled={!isRunning}
+        ref={textareaRef}
       />
       <h4>Time Remaining: {timeLeft}</h4>
       <button
