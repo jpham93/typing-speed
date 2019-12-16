@@ -1,47 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import useGame from "./hooks/useGame";
+
 import './App.css';
 
 const App = () => {
   const TIME = 10;
 
-  const [input, setInput] = useState('');
-  const [timeLeft, setTime] = useState(TIME);
-  const [isRunning, setRunning] = useState(false);
-  const [wordCount, setWordCount] = useState(0);
-  const textareaRef = useRef(null);
-
-  const handleChange = e => {
-    const {value} = e.target;
-    setInput(value);
-  };
-
-  const countWords = () => {
-    const wordsArr = input.trim().split(' ');
-    return wordsArr.filter(word => word !== "").length;
-  };
-
-  const startGame = () => {
-    setRunning(true);
-    setTime(TIME);
-    setInput('');
-    textareaRef.current.disabled = false;
-    textareaRef.current.focus();
-  };
-
-  const endGame = () => {
-    setRunning(false);
-    setWordCount(countWords(input));
-  };
-
-  useEffect(() => {
-    if (timeLeft > 0 && isRunning) {
-      setTimeout( () => {
-        setTime((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      endGame();
-    }
-  }, [timeLeft, isRunning]);
+  const {
+    input,
+    handleChange,
+    isRunning,
+    textareaRef,
+    timeLeft,
+    startGame,
+    wordCount,
+  } = useGame(TIME);
 
   return (
     <>
